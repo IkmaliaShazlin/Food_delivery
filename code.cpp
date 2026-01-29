@@ -12,7 +12,7 @@ int main() {
     cout << "Enter distance km: ";
     cin >> distanceKm;
 
-    cout << "Enter food price (RM): ";
+    cout << "Enter food price in (RM): ";
     cin >> foodPrice;
 
     // Calculation
