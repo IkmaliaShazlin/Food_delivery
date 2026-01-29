@@ -1,18 +1,29 @@
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 int main() {
-    string name;
-    int age;
+    double distanceKm;
+    double foodPrice;
+    double deliveryFee;
+    double totalPrice;
 
-    cout << "Enter your name: ";
-    cin >> name;
+    // Input
+    cout << "Enter distance (km): ";
+    cin >> distanceKm;
 
-    cout << "Enter your age: ";
-    cin >> age;
+    cout << "Enter food price (RM): ";
+    cin >> foodPrice;
 
-    cout << "\nHello, " << name << "!" << endl;
-    cout << "Next year, you will be " << age + 1 << " years old." << endl;
+    // Calculation
+    deliveryFee = 0.50 * distanceKm;
+    totalPrice = foodPrice + deliveryFee;
+
+    // Output
+    cout << fixed << setprecision(2);
+    cout << "\nDelivery Fee: RM " << deliveryFee << endl;
+    cout << "Total Price: RM " << totalPrice << endl;
 
     return 0;
 }
+
