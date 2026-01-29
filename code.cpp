@@ -9,7 +9,7 @@ int main() {
     double totalPrice;
 
     // Input
-    cout << "Enter distance kmmm: ";
+    cout << "Enter distance km: ";
     cin >> distanceKm;
 
     cout << "Enter food price (RM): ";
