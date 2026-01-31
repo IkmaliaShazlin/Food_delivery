@@ -1,97 +1,95 @@
 #include <iostream>
 #include <iomanip>
+#include <string>
 using namespace std;
 
 int main() {
-    char choice;
+    const double RATE_PER_KM = 0.50;
+    const double MIN_DELIVERY = 3.00;
+    const double FREE_DELIVERY_LIMIT = 50.00;
+    const double SERVICE_TAX = 2.50;
 
+    double distanceKm;
+    double foodPrice = 0.0;
+    double deliveryFee, subtotal, totalPrice;
+    char addMore;
+    string foodList = "";
+
+    cout << fixed << setprecision(2);
+
+    cout << "=============================\n";
+    cout << "    FOOD DELIVERY SYSTEM   \n";
+    cout << "=============================\n";
+    cout << "Delivery Rate : RM " << RATE_PER_KM << " per km\n";
+    cout << "Minimum Fee   : RM " << MIN_DELIVERY << endl;
+    cout << "Free Delivery : Orders RM " << FREE_DELIVERY_LIMIT << " and above\n";
+    cout << "=============================\n\n";
+
+    // Food ordering loop
     do {
-        double distanceKm;
-        double foodPrice = 0.0;
-        double deliveryFee, totalPrice;
-        int menuChoice;
-        char addMore;
+        string restaurant, foodName;
+        double price;
 
-        string foodList = "";
+        cout << "\nEnter restaurant name: ";
+        getline(cin, restaurant);
 
-        const double RATE_PER_KM = 0.50;
-        const double MIN_DELIVERY = 3.00;
-        const double FREE_DELIVERY_LIMIT = 50.00;
+        cout << "Enter food name: ";
+        getline(cin, foodName);
 
-        cout << "=============================\n";
-        cout << "    FOOD DELIVERY SYSTEM   \n";
-        cout << "=============================\n";
-        cout << fixed << setprecision(2);
-        cout << "Delivery Rate : RM " << RATE_PER_KM << " per km\n";
-        cout << "Minimum Fee   : RM " << MIN_DELIVERY << endl;
-        cout << "Free Delivery : Orders RM " << FREE_DELIVERY_LIMIT << " and above\n";
-        cout << "=============================\n\n";
+        cout << "Enter food price (RM): ";
+        cin >> price;
+        cin.ignore();
 
-        // Input distance
-        cout << "Enter distance (km): ";
-        cin >> distanceKm;
+        foodPrice += price;
 
-        // Food ordering loop
-        do {
-            cout << "\n------ Malay Food Menu ------\n";
-            cout << "1. Nasi Lemak         - RM 3.50\n";
-            cout << "2. Teh O Ais         - RM 2.50\n";
-            cout << "3. Ayam Goreng + Rice - RM 8.00\n";
-            cout << "-----------------------------\n";
-            cout << "Choose menu (1-3): ";
-            cin >> menuChoice;
+        // FIX: use sprintf to format to 2 decimals
+        char priceStr[20];
+        sprintf(priceStr, "%.2f", price);
+        foodList += restaurant + " - " + foodName + " : RM " + priceStr + "\n";
 
-            if (menuChoice == 1) {
-                foodPrice += 3.50;
-                foodList += "Nasi Lemak\n";
-            } 
-            else if (menuChoice == 2) {
-                foodPrice += 2.50;
-                foodList += "Teh O Ais\n";
-            } 
-            else if (menuChoice == 3) {
-                foodPrice += 8.00;
-                foodList += "Ayam Goreng + Rice\n";
-            } 
-            else {
-                cout << "Invalid choice. Item not added.\n";
-            }
+        cout << "Add another food? (y/n): ";
+        cin >> addMore;
+        cin.ignore();
 
-            cout << "Add another food? (y/n): ";
-            cin >> addMore;
+    } while (addMore == 'y' || addMore == 'Y');
 
-        } while (addMore == 'y' || addMore == 'Y');
+    cout << "\nEnter distance (km): ";
+    cin >> distanceKm;
+    cin.ignore();
 
-        // Calculate delivery fee
-        deliveryFee = RATE_PER_KM * distanceKm;
+    // Calculate delivery fee
+    deliveryFee = RATE_PER_KM * distanceKm;
+    if (deliveryFee < MIN_DELIVERY) deliveryFee = MIN_DELIVERY;
 
-        if (deliveryFee < MIN_DELIVERY) {
-            deliveryFee = MIN_DELIVERY;
-        }
+    // Calculate subtotal
+    subtotal = foodPrice + deliveryFee + SERVICE_TAX;
 
-        if (foodPrice >= FREE_DELIVERY_LIMIT) {
-            deliveryFee = 0.00;
-        }
+    // Free delivery check
+    double freeDeliveryDiscount = 0.0;
+    if (foodPrice >= FREE_DELIVERY_LIMIT) {
+        freeDeliveryDiscount = deliveryFee;
+    }
+    totalPrice = subtotal - freeDeliveryDiscount;
 
-        totalPrice = foodPrice + deliveryFee;
+    // Print receipt
+    cout << "\n--------- RECEIPT ---------\n";
+    cout << "Food Ordered:\n" << foodList;
+    cout << "---------------------------\n";
+    cout << "Food Price     : RM " << foodPrice << endl;
+    cout << "Delivery Fee   : RM " << deliveryFee << endl;
+    cout << "Service Tax    : RM " << SERVICE_TAX << endl;
+    cout << "---------------------------\n";
+    cout << "Subtotal       : RM " << subtotal << endl;
 
-        // Receipt
-        cout << "\n--------- RECEIPT ---------\n";
-        cout << "Food Ordered:\n" << foodList;
-        cout << "---------------------------\n";
-        cout << "Food Price     : RM " << foodPrice << endl;
-        cout << "Delivery Fee   : RM " << deliveryFee << endl;
-        cout << "---------------------------\n";
-        cout << "Total Amount   : RM " << totalPrice << endl;
-        cout << "---------------------------\n";
+    if (freeDeliveryDiscount > 0) {
+        cout << "Free Delivery  : -RM " << freeDeliveryDiscount << endl;
+    }
 
-        cout << "\nPlace another order? (y/n): ";
-        cin >> choice;
-        cout << endl;
+    cout << "---------------------------\n";
+    cout << "Total Amount   : RM " << totalPrice << endl;
+    cout << "---------------------------\n";
 
-    } while (choice == 'y' || choice == 'Y');
-
-    cout << "Thank you for using our service! 🚀\n";
+    cout << "\nThank you for supporting our service!\n\n";
 
     return 0;
 }
