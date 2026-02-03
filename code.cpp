@@ -16,7 +16,6 @@ int main() {
     string foodList = "";
 
     int itemCount = 0;
-    bool validInput = true;   
 
     cout << fixed << setprecision(2);
 
@@ -28,7 +27,7 @@ int main() {
     cout << "Free Delivery : Orders RM " << FREE_DELIVERY_LIMIT << " and above\n";
     cout << "=============================\n\n";
 
-    // Food ordering loop
+    // ===== Food Ordering Loop =====
     do {
         string restaurant, foodName;
         double price;
@@ -39,68 +38,61 @@ int main() {
         cout << "Enter food name: ";
         getline(cin, foodName);
 
-        do {
-            cout << "Enter food price (RM): ";
-            cin >> price;
-             cin.ignore();
-
-        if (cin.fail() || price <= 0) {
-        cin.clear();
-        cin.ignore(1000, '\n');
-        cout << "Invalid price. Please enter a valid amount.\n";
+        // FIXED PRICE INPUT
+        cout << "Enter food price (RM): ";
+        while (!(cin >> price) || price <= 0) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Invalid price. Enter again (RM): ";
         }
-    } while (cin.fail() || price <= 0);
+        cin.ignore();
 
         foodPrice += price;
+        itemCount++;
 
-        itemCount++;   // Count number of items ordered
-
-        // FIX: use sprintf to format to 2 decimals
+        // Format price to 2 decimal places
         char priceStr[20];
         sprintf(priceStr, "%.2f", price);
         foodList += restaurant + " - " + foodName + " : RM " + priceStr + "\n";
 
+        // Add more food
         cout << "Add another food? (y/n): ";
         cin >> addMore;
         cin.ignore();
 
-        while (addMore != 'y' && addMore != 'Y' && addMore != 'n' && addMore != 'N') {
-    cout << "Invalid input. Please enter y or n: ";
-    cin >> addMore;
-    cin.ignore();
-}
-
+        while (addMore != 'y' && addMore != 'Y' &&
+               addMore != 'n' && addMore != 'N') {
+            cout << "Invalid input. Enter y or n: ";
+            cin >> addMore;
+            cin.ignore();
+        }
 
     } while (addMore == 'y' || addMore == 'Y');
 
+    // FIXED DISTANCE INPUT
     cout << "\nEnter distance (km): ";
-    cin >> distanceKm;
+    while (!(cin >> distanceKm) || distanceKm <= 0) {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << "Invalid distance. Enter again (km): ";
+    }
     cin.ignore();
 
-    while (cin.fail() || distanceKm <= 0) {
-    cin.clear();
-    cin.ignore(1000, '\n');
-    cout << "Invalid distance. Please enter a positive number: ";
-    cin >> distanceKm;
-    cin.ignore();
-}
-
-
-    // Calculate delivery fee
+    // ===== Calculations =====
     deliveryFee = RATE_PER_KM * distanceKm;
-    if (deliveryFee < MIN_DELIVERY) deliveryFee = MIN_DELIVERY;
+    if (deliveryFee < MIN_DELIVERY)
+        deliveryFee = MIN_DELIVERY;
 
-    // Calculate subtotal
     subtotal = foodPrice + deliveryFee + SERVICE_TAX;
 
-    // Free delivery check
     double freeDeliveryDiscount = 0.0;
     if (foodPrice >= FREE_DELIVERY_LIMIT) {
         freeDeliveryDiscount = deliveryFee;
     }
+
     totalPrice = subtotal - freeDeliveryDiscount;
 
-    // Print receipt
+    // ===== Receipt =====
     cout << "\n--------- RECEIPT ---------\n";
     cout << "Food Ordered:\n" << foodList;
     cout << "Items Ordered : " << itemCount << endl;
