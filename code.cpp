@@ -39,16 +39,17 @@ int main() {
         cout << "Enter food name: ";
         getline(cin, foodName);
 
-        cout << "Enter food price (RM): ";
-        cin >> price;
-        cin.ignore();
+        do {
+            cout << "Enter food price (RM): ";
+            cin >> price;
+             cin.ignore();
 
         if (cin.fail() || price <= 0) {
-    cin.clear();
-    cin.ignore(1000, '\n');
-    cout << "Invalid price. Please enter a valid amount.\n";
-    continue;   // restart loop without counting item
-}
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << "Invalid price. Please enter a valid amount.\n";
+        }
+    } while (cin.fail() || price <= 0);
 
         foodPrice += price;
 
