@@ -15,6 +15,8 @@ int main() {
     char addMore;
     string foodList = "";
 
+    int itemCount = 0;   
+
     cout << fixed << setprecision(2);
 
     cout << "=============================\n";
@@ -41,6 +43,8 @@ int main() {
         cin.ignore();
 
         foodPrice += price;
+
+        itemCount++;   // Count number of items ordered
 
         // FIX: use sprintf to format to 2 decimals
         char priceStr[20];
@@ -74,6 +78,7 @@ int main() {
     // Print receipt
     cout << "\n--------- RECEIPT ---------\n";
     cout << "Food Ordered:\n" << foodList;
+    cout << "Items Ordered : " << itemCount << endl;
     cout << "---------------------------\n";
     cout << "Food Price     : RM " << foodPrice << endl;
     cout << "Delivery Fee   : RM " << deliveryFee << endl;
