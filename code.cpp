@@ -63,11 +63,27 @@ int main() {
         cin >> addMore;
         cin.ignore();
 
+        while (addMore != 'y' && addMore != 'Y' && addMore != 'n' && addMore != 'N') {
+    cout << "Invalid input. Please enter y or n: ";
+    cin >> addMore;
+    cin.ignore();
+}
+
+
     } while (addMore == 'y' || addMore == 'Y');
 
     cout << "\nEnter distance (km): ";
     cin >> distanceKm;
     cin.ignore();
+
+    while (cin.fail() || distanceKm <= 0) {
+    cin.clear();
+    cin.ignore(1000, '\n');
+    cout << "Invalid distance. Please enter a positive number: ";
+    cin >> distanceKm;
+    cin.ignore();
+}
+
 
     // Calculate delivery fee
     deliveryFee = RATE_PER_KM * distanceKm;
