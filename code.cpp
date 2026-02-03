@@ -15,7 +15,8 @@ int main() {
     char addMore;
     string foodList = "";
 
-    int itemCount = 0;   
+    int itemCount = 0;
+    bool validInput = true;   
 
     cout << fixed << setprecision(2);
 
@@ -41,6 +42,13 @@ int main() {
         cout << "Enter food price (RM): ";
         cin >> price;
         cin.ignore();
+
+        if (cin.fail() || price <= 0) {
+    cin.clear();
+    cin.ignore(1000, '\n');
+    cout << "Invalid price. Please enter a valid amount.\n";
+    continue;   // restart loop without counting item
+}
 
         foodPrice += price;
 
